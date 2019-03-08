@@ -1,12 +1,12 @@
-from selenium.webdriver.common.keys import Keys
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as ec
-from selenium.webdriver.common.action_chains import ActionChains
 import unittest
 import time
 
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as ec
 
 class amazon(unittest.TestCase):
 
@@ -15,6 +15,7 @@ class amazon(unittest.TestCase):
         self.driver.maximize_window()
 
     def test_home(self):
+
         try:
             driver = self.driver
             driver.get("https://www.amazon.com/")
