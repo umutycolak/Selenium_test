@@ -98,7 +98,7 @@ class amazon(unittest.TestCase):
             time.sleep(1)
             assert "Deleted" in driver.find_element_by_css_selector(".a-alert-inline-success .a-alert-content").text
         except Exception as exception_13:
-            print("Ürünü listeden silemedi" + exception_13)
+            print("Ürünü listeden silemedii" + exception_13)
 
     def tearDown(self):
         self.driver.close()
