@@ -8,8 +8,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 
-class amazon(unittest.TestCase):
 
+class amazon(unittest.TestCase):
 
     def setUp(self):
         self.driver = webdriver.Chrome()
