@@ -10,6 +10,7 @@ from selenium.webdriver.support import expected_conditions as ec
 
 class amazon(unittest.TestCase):
 
+
     def setUp(self):
         self.driver = webdriver.Chrome()
         self.driver.maximize_window()
@@ -46,7 +47,7 @@ class amazon(unittest.TestCase):
             print("Login olunamadı " + exception_5)
 
         try:
-            WebDriverWait(driver, 10).until(ec.presencce_of_element_located((By.ID, "twotabsearchtextbox"))).send_keys(
+            WebDriverWait(driver, 10).until(ec.presence_of_element_located((By.ID, "twotabsearchtextbox"))).send_keys(
                 "samsung", Keys.RETURN)
             assert "samsung" in driver.find_element_by_class_name("a-color-state").text
         except Exception as exception_6:
@@ -98,7 +99,7 @@ class amazon(unittest.TestCase):
             time.sleep(1)
             assert "Deleted" in driver.find_element_by_css_selector(".a-alert-inline-success .a-alert-content").text
         except Exception as exception_13:
-            print("Ürünü listeden silemedii" + exception_13)
+            print("Ürünü listeden silemedi" + exception_13)
 
     def tearDown(self):
         self.driver.close()
