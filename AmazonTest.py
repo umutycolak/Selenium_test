@@ -1,6 +1,4 @@
-import unittest
 import time
-
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -9,101 +7,117 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 
 
-class amazon(unittest.TestCase):
+class Locators:
+    website_URL = "https://www.amazon.com/"
+    login_id = "nav-link-accountList"
+    mail_id = "ap_email"
+    mail_text = "umut.yasin.colak@hotmail.com"
+    password_id = "ap_password"
+    password_text = "Umut0127-"
+    login_button = "signInSubmit"
+    input_area = "twotabsearchtextbox"
+    search_value = "samsung"
+    search_text = "a-color-state"
+    page_button = ".a-selected a"
+    wait_product = "div[data-index='0']"
+    product_selector = "div[data-index='2'] h5 .a-size-medium"
+    add_list = "add-to-wishlist-button-submit"
+    list_close = ".a-button-close:nth-child(2)"
+    move_element = "nav-truncate"
+    list_view = ".nav-panel>.nav-link:nth-child(1)>.nav-text"
+    list_product = "div h3 a"
+    list_product_delete = "#a-autoid-7 .a-button-input"
+    delete_check = ".a-alert-inline-success .a-alert-content"
+    name = ""
+    delete = "Deleted"
 
-    def setUp(self):
-        self.driver = webdriver.Chrome()
-        self.driver.maximize_window()
 
-    def test_home(self):
+class Driver:
+    driver = webdriver.Chrome()
 
-        try:
-            driver = self.driver
-            driver.get("https://www.amazon.com/")
-        except Exception as exception_1:
-            print("URL'e ulasilamadi" + exception_1)
 
-        try:
-            WebDriverWait(driver, 10).until(ec.element_to_be_clickable((By.ID, "nav-link-accountList"))).click()
-        except Exception as exception_2:
-            print("Login için tiklanamadi" + exception_2)
+class Amazon_test:
+    class StepOne:
 
-        try:
-            input_ad = driver.find_element_by_id("ap_email")
-            input_ad.send_keys("umut.yasin.colak@hotmail.com")
-        except Exception as exception_3:
-            print("@mail girisi saglanamadi" + exception_3)
+        def __init__(self):
+            Driver.driver.get(Locators.website_URL)
+            assert "amazon" in Driver.driver.current_url
 
-        try:
-            input_password = driver.find_element_by_id("ap_password")
-            input_password.send_keys("Umut0127-")
-        except Exception as exception_4:
-            print("pasword girisi saglanamadi" + exception_4)
+    class StepTwo:
 
-        try:
-            login_click_2 = driver.find_element_by_id("signInSubmit")
+        def __init__(self):
+            WebDriverWait(Driver.driver, 10).until(ec.element_to_be_clickable((By.ID, Locators.login_id))).click()
+            input_ad = Driver.driver.find_element_by_id(Locators.mail_id)
+            input_ad.send_keys(Locators.mail_text)
+            input_password = Driver.driver.find_element_by_id(Locators.password_id)
+            input_password.send_keys(Locators.password_text)
+            login_click_2 = Driver.driver.find_element_by_id(Locators.login_button)
             login_click_2.click()
-        except Exception as exception_5:
-            print("Login olunamadi " + exception_5)
 
-        try:
-            WebDriverWait(driver, 10).until(ec.presence_of_element_located((By.ID, "twotabsearchtextbox"))).send_keys(
-                "samsung", Keys.RETURN)
-            assert "samsung" in driver.find_element_by_class_name("a-color-state").text
-        except Exception as exception_6:
-            print("Arama gerçeklestirilemedi" + exception_6)
+    class StepThree:
+        def __init__(self):
+            WebDriverWait(Driver.driver, 10).until(
+                ec.presence_of_element_located((By.ID, Locators.input_area))).send_keys(
+                Locators.search_value, Keys.RETURN)
 
-        try:
-            WebDriverWait(driver, 10).until(
-                ec.element_to_be_clickable((By.CSS_SELECTOR, ".a-normal:nth-child(3)>a"))).click()
-            assert "2" in driver.find_element_by_css_selector(".a-selected:nth-child(3)>a").text
-        except Exception as exception_7:
-            print("2. sayfaya geçilemedi" + exception_7)
+    class StepFour:
+        def __init__(self):
+            assert Locators.search_value in Driver.driver.find_element_by_class_name(Locators.search_text).text
 
-        try:
-            WebDriverWait(driver, 10).until(ec.element_to_be_clickable((By.CSS_SELECTOR, "div[data-index='0']")))
-            product = driver.find_element_by_css_selector("div[data-index='2'] h5 .a-size-medium")
-            name = product.text
+    class StepFive:
+        def __init__(self):
+            WebDriverWait(Driver.driver, 10).until(
+                ec.element_to_be_clickable((By.CSS_SELECTOR, Locators.page_button))).click()
+            assert "2" in Driver.driver.find_element_by_css_selector(Locators.wait_product).text
+
+    class StepSix:
+        def __init__(self):
+            WebDriverWait(Driver.driver, 10).until(ec.element_to_be_clickable((By.CSS_SELECTOR, Locators.wait_product)))
+            product = Driver.driver.find_element_by_css_selector(Locators.product_selector)
+            Locators.name = product.text
             product.click()
-        except Exception as exception_8:
-            print("3. ürün açilamadi" + exception_8)
+            WebDriverWait(Driver.driver, 10).until(
+                ec.element_to_be_clickable((By.ID, Locators.add_list))).click()
+            time.sleep(2)
+            WebDriverWait(Driver.driver, 10).until(
+                ec.element_to_be_clickable((By.CSS_SELECTOR, Locators.list_close))).click()
 
-        try:
-            WebDriverWait(driver, 10).until(
-                ec.element_to_be_clickable((By.ID, "add-to-wishlist-button-submit"))).click()
+    class StepSeven:
+        def __init__(self):
+            element = Driver.driver.find_element_by_class_name(Locators.move_element)
+            ActionChains(Driver.driver).move_to_element(element).perform()
+            WebDriverWait(Driver.driver, 10).until(
+                ec.element_to_be_clickable((By.CSS_SELECTOR, Locators.list_view))).click()
+
+    class StepEight:
+        def __init__(self):
+            assert Locators.name in Driver.driver.find_element_by_css_selector(Locators.list_product).text
+
+    class StepNine:
+        def __init__(self):
+            WebDriverWait(
+                Driver.driver, 10).until(
+                ec.element_to_be_clickable((By.CSS_SELECTOR, Locators.list_product_delete))).click()
+
+    class StepTen:
+        def __init__(self):
             time.sleep(1)
-        except Exception as exception_9:
-            print("ürün listeye eklenemedi" + exception_9)
+            assert Locators.delete in Driver.driver.find_element_by_css_selector(Locators.delete_check).text
 
-        try:
-            WebDriverWait(driver, 10).until(
-                ec.element_to_be_clickable((By.CSS_SELECTOR, ".a-button-close:nth-child(2)"))).click()
-        except Exception as exception_10:
-            print("ekleme sayfasi kapatilamadi" + exception_10)
-
-        try:
-            element = driver.find_element_by_class_name("nav-truncate")
-            ActionChains(driver).move_to_element(element).perform()
-            WebDriverWait(driver, 10).until(
-                ec.element_to_be_clickable((By.CSS_SELECTOR, ".nav-panel>.nav-link:nth-child(1)>.nav-text"))).click()
-        except Exception as exception_11:
-            print("menüdeki listeye ulasilamadi" + exception_11)
-
-        try:
-            assert name in driver.find_element_by_css_selector("div h3 a").text
-        except Exception as exception_12:
-            print("listedeki ürün eklenen ürün degil" + exception_12)
-
-        try:
-            WebDriverWait(driver, 10).until(ec.element_to_be_clickable((By.CSS_SELECTOR, "#a-autoid-7"))).click()
-            time.sleep(1)
-            assert "Deleted" in driver.find_element_by_css_selector(".a-alert-inline-success .a-alert-content").text
-        except Exception as exception_13:
-            print("Ürünü listeden silemedi" + exception_13)
-
-    def tearDown(self):
-        self.driver.close()
+    class start:
+        def __init__(self):
+            Locators()
+            Amazon_test.StepOne()
+            Amazon_test.StepTwo()
+            Amazon_test.StepThree()
+            Amazon_test.StepFour()
+            Amazon_test.StepFive()
+            Amazon_test.StepSix()
+            Amazon_test.StepSeven()
+            Amazon_test.StepEight()
+            Amazon_test.StepNine()
+            Amazon_test.StepTen()
+            Driver.driver.close()
 
 
-if __name__ == "__main__":
-    unittest.main()
+Amazon_test.start()
