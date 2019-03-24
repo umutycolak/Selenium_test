@@ -82,6 +82,7 @@ class Amazon_test:
             WebDriverWait(Driver.driver, 10).until(
                 ec.element_to_be_clickable((By.CSS_SELECTOR, Locators.list_close))).click()
 
+
     class StepSeven:
         def __init__(self):
             element = Driver.driver.find_element_by_class_name(Locators.move_element)
