@@ -37,10 +37,10 @@ class Locators:
 
 class action:
 
-    def click_CSS (self, click_Locators):
+    def click (self, click_Locators):
         WebDriverWait(Driver.driver, 10).until(ec.element_to_be_clickable((By.CSS_SELECTOR, click_Locators))).click()
 
-    def text_CSS (self, value, text_Locators):
+    def Assert (self, value, text_Locators):
         assert value in Driver.driver.find_element_by_css_selector(text_Locators).text
 
     def url_check(self, amazon, url):
@@ -54,7 +54,8 @@ class action:
 
     def input (self, idd, mail):
         Driver.driver.find_element_by_id(idd).send_keys(mail)
-    def send_key(self, input_area, value):
+
+    def search(self, input_area, value):
         WebDriverWait(Driver.driver, 10).until(ec.presence_of_element_located((By.ID, input_area))).send_keys(
             value, Keys.RETURN)
 
@@ -70,39 +71,34 @@ class Amazon_test:
         get_class = action()
         get_class.url_check(Locators.amazon, Driver.driver.current_url)
         #Steptwo
-        get_class.click_CSS(Locators.login_id)
+        get_class.click(Locators.login_id)
         get_class.input(Locators.mail_id, Locators.mail_text)
         get_class.input(Locators.password_id, Locators.password_text)
-        get_class.click_CSS(Locators.login_button)
+        get_class.click(Locators.login_button)
         #StepThree
-        get_class.send_key(Locators.input_area, Locators.search_value )
+        get_class.search(Locators.input_area, Locators.search_value)
         #StepFour
-        get_class.text_CSS(Locators.search_value, Locators.search_text)
+        get_class.Assert(Locators.search_value, Locators.search_text)
         #StepFive
-        get_class.click_CSS(Locators.page_button2)
-        get_class.text_CSS(Locators.page, Locators.page_button)
+        get_class.click(Locators.page_button2)
+        get_class.Assert(Locators.page, Locators.page_button)
         #StepSix
         get_class.get_text(Locators.name, Locators.product_selector)
-        get_class.click_CSS(Locators.product_selector)
-        get_class.click_CSS(Locators.add_list)
+        get_class.click(Locators.product_selector)
+        get_class.click(Locators.add_list)
         time.sleep(2)
-        get_class.click_CSS(Locators.list_close)
+        get_class.click(Locators.list_close)
         #StepSeven
         get_class.hover(Locators.move_element)
-        get_class.click_CSS(Locators.list_view)
+        get_class.click(Locators.list_view)
         #StepEight
-        get_class.text_CSS(Locators.name, Locators.list_product)
+        get_class.Assert(Locators.name, Locators.list_product)
         #StepNine
-        Click_parameter = action()
-        Click_parameter.click_CSS(Locators.list_product_delete)
+        get_class.click(Locators.list_product_delete)
         #StepTen
         time.sleep(1)
-        get_class.text_CSS(Locators.delete, Locators.delete_check)
+        get_class.Assert(Locators.delete, Locators.delete_check)
 
 
-class start:
-    def __init__(self):
-        Locators()
-        Amazon_test()
-        Driver.driver.close()
-start()
+Amazon_test()
+Driver.driver.close()
