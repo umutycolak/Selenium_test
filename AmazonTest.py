@@ -9,19 +9,20 @@ from selenium.webdriver.support import expected_conditions as ec
 
 class Locators:
     website_URL = "https://www.amazon.com/"
-    login_id = "nav-link-accountList"
+    login_id = "#nav-link-accountList"
     mail_id = "ap_email"
     mail_text = "umut.yasin.colak@hotmail.com"
     password_id = "ap_password"
     password_text = "Umut0127-"
-    login_button = "signInSubmit"
+    login_button = "#signInSubmit"
     input_area = "twotabsearchtextbox"
     search_value = "samsung"
-    search_text = "a-color-state"
+    search_text = ".a-color-state"
     page_button = ".a-selected a"
+    page_button2 = ".a-normal a"
     wait_product = "div[data-index='0']"
     product_selector = "div[data-index='2'] h5 .a-size-medium"
-    add_list = "add-to-wishlist-button-submit"
+    add_list = "#add-to-wishlist-button-submit"
     list_close = ".a-button-close:nth-child(2)"
     move_element = "nav-truncate"
     list_view = ".nav-panel>.nav-link:nth-child(1)>.nav-text"
@@ -30,95 +31,78 @@ class Locators:
     delete_check = ".a-alert-inline-success .a-alert-content"
     name = ""
     delete = "Deleted"
+    page = "2"
+    amazon = "amazon"
 
+
+class action:
+
+    def click_CSS (self, click_Locators):
+        WebDriverWait(Driver.driver, 10).until(ec.element_to_be_clickable((By.CSS_SELECTOR, click_Locators))).click()
+
+    def text_CSS (self, value, text_Locators):
+        assert value in Driver.driver.find_element_by_css_selector(text_Locators).text
+
+    def url_check(self, amazon, url):
+        assert amazon in url
+
+    def get_text (self, Name, text):
+        Name == Driver.driver.find_element_by_css_selector(text).text
+
+    def hover (self, hover):
+        ActionChains(Driver.driver).move_to_element(Driver.driver.find_element_by_class_name(hover)).perform()
+
+    def input (self, idd, mail):
+        Driver.driver.find_element_by_id(idd).send_keys(mail)
+    def send_key(self, input_area, value):
+        WebDriverWait(Driver.driver, 10).until(ec.presence_of_element_located((By.ID, input_area))).send_keys(
+            value, Keys.RETURN)
 
 class Driver:
     driver = webdriver.Chrome()
 
 
 class Amazon_test:
-    class StepOne:
-
-        def __init__(self):
-            Driver.driver.get(Locators.website_URL)
-            assert "amazon" in Driver.driver.current_url
-
-    class StepTwo:
-
-        def __init__(self):
-            WebDriverWait(Driver.driver, 10).until(ec.element_to_be_clickable((By.ID, Locators.login_id))).click()
-            input_ad = Driver.driver.find_element_by_id(Locators.mail_id)
-            input_ad.send_keys(Locators.mail_text)
-            input_password = Driver.driver.find_element_by_id(Locators.password_id)
-            input_password.send_keys(Locators.password_text)
-            login_click_2 = Driver.driver.find_element_by_id(Locators.login_button)
-            login_click_2.click()
-
-    class StepThree:
-        def __init__(self):
-            WebDriverWait(Driver.driver, 10).until(
-                ec.presence_of_element_located((By.ID, Locators.input_area))).send_keys(
-                Locators.search_value, Keys.RETURN)
-
-    class StepFour:
-        def __init__(self):
-            assert Locators.search_value in Driver.driver.find_element_by_class_name(Locators.search_text).text
-
-    class StepFive:
-        def __init__(self):
-            WebDriverWait(Driver.driver, 10).until(
-                ec.element_to_be_clickable((By.CSS_SELECTOR, Locators.page_button))).click()
-            assert "2" in Driver.driver.find_element_by_css_selector(Locators.wait_product).text
-
-    class StepSix:
-        def __init__(self):
-            WebDriverWait(Driver.driver, 10).until(ec.element_to_be_clickable((By.CSS_SELECTOR, Locators.wait_product)))
-            product = Driver.driver.find_element_by_css_selector(Locators.product_selector)
-            Locators.name = product.text
-            product.click()
-            WebDriverWait(Driver.driver, 10).until(
-                ec.element_to_be_clickable((By.ID, Locators.add_list))).click()
-            time.sleep(2)
-            WebDriverWait(Driver.driver, 10).until(
-                ec.element_to_be_clickable((By.CSS_SELECTOR, Locators.list_close))).click()
+    def __init__(self):
+        #Stepone
+        Driver.driver.get(Locators.website_URL)
+        Driver.driver.maximize_window()
+        get_class = action()
+        get_class.url_check(Locators.amazon, Driver.driver.current_url)
+        #Steptwo
+        get_class.click_CSS(Locators.login_id)
+        get_class.input(Locators.mail_id, Locators.mail_text)
+        get_class.input(Locators.password_id, Locators.password_text)
+        get_class.click_CSS(Locators.login_button)
+        #StepThree
+        get_class.send_key(Locators.input_area, Locators.search_value )
+        #StepFour
+        get_class.text_CSS(Locators.search_value, Locators.search_text)
+        #StepFive
+        get_class.click_CSS(Locators.page_button2)
+        get_class.text_CSS(Locators.page, Locators.page_button)
+        #StepSix
+        get_class.get_text(Locators.name, Locators.product_selector)
+        get_class.click_CSS(Locators.product_selector)
+        get_class.click_CSS(Locators.add_list)
+        time.sleep(2)
+        get_class.click_CSS(Locators.list_close)
+        #StepSeven
+        get_class.hover(Locators.move_element)
+        get_class.click_CSS(Locators.list_view)
+        #StepEight
+        get_class.text_CSS(Locators.name, Locators.list_product)
+        #StepNine
+        Click_parameter = action()
+        Click_parameter.click_CSS(Locators.list_product_delete)
+        #StepTen
+        time.sleep(1)
+        get_class.text_CSS(Locators.delete, Locators.delete_check)
 
 
-    class StepSeven:
-        def __init__(self):
-            element = Driver.driver.find_element_by_class_name(Locators.move_element)
-            ActionChains(Driver.driver).move_to_element(element).perform()
-            WebDriverWait(Driver.driver, 10).until(
-                ec.element_to_be_clickable((By.CSS_SELECTOR, Locators.list_view))).click()
-
-    class StepEight:
-        def __init__(self):
-            assert Locators.name in Driver.driver.find_element_by_css_selector(Locators.list_product).text
-
-    class StepNine:
-        def __init__(self):
-            WebDriverWait(
-                Driver.driver, 10).until(
-                ec.element_to_be_clickable((By.CSS_SELECTOR, Locators.list_product_delete))).click()
-
-    class StepTen:
-        def __init__(self):
-            time.sleep(1)
-            assert Locators.delete in Driver.driver.find_element_by_css_selector(Locators.delete_check).text
-
-    class start:
-        def __init__(self):
-            Locators()
-            Amazon_test.StepOne()
-            Amazon_test.StepTwo()
-            Amazon_test.StepThree()
-            Amazon_test.StepFour()
-            Amazon_test.StepFive()
-            Amazon_test.StepSix()
-            Amazon_test.StepSeven()
-            Amazon_test.StepEight()
-            Amazon_test.StepNine()
-            Amazon_test.StepTen()
-            Driver.driver.close()
-
-
-Amazon_test.start()
+class start:
+    def __init__(self):
+        Locators()
+        Amazon_test()
+        Driver.driver.close()
+start()
