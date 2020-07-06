@@ -150,7 +150,7 @@ class Amazon_test:
         self.Action.url_check(Config.referans_url, Config.current_url)
         # Steptwo
         self.HomePage.loginButtonclick()
-        self.LoginPage.login("umut.yasin.colak@hotmail.com", "Umut0127-")
+        self.LoginPage.login("***********@hotmail.com", "*******")
         # StepThree
         self.HomePage.searchinput("samsung")
         # StepFour
